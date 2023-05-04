@@ -2,8 +2,9 @@ const { SlashCommandBuilder, ButtonBuilder, ActionRowBuilder, AttachmentBuilder,
 
 const Canvas = require('@napi-rs/canvas');
 const path = require('node:path');
-const resPath = path.join(__dirname, 'genshin');
-Canvas.GlobalFonts.registerFromPath(path.join(resPath, 'zh-cn.ttf'), 'genshin');
+const resPath = path.join(__dirname, 'hsr');
+Canvas.GlobalFonts.registerFromPath(path.join(resPath, 'zekton_rg.otf'), 'hsr');
+Canvas.GlobalFonts.registerFromPath(path.join(resPath, 'GT_Grotesk.otf'), 'hsr-code');
 const res = { width: 700, height: 300 };
 
 const applyText = (canvas, text, size, maxWidth, family) => {
@@ -20,9 +21,9 @@ module.exports = {
 	data: new SlashCommandBuilder()
 		.setDMPermission(false)
 		.setDefaultMemberPermissions('0')
-		.setName('genshin')
-		.setDescription('Post Genshin Impact promocode')
-		.setDescriptionLocalizations({ ru: 'Опубликовать промокод Genshin Impact' })
+		.setName('hsr')
+		.setDescription('Post Honkai: Star Rail promocode')
+		.setDescriptionLocalizations({ ru: 'Опубликовать промокод Honkai: Star Rail' })
 		.addStringOption(option =>
 			option
 				.setName('code')
@@ -32,60 +33,60 @@ module.exports = {
 				.setRequired(true))
 		.addIntegerOption(option =>
 			option
-				.setName('gems')
-				.setNameLocalizations({ ru: 'гемы' })
-				.setDescription('Enter the amount of Primogems if code provides any')
-				.setDescriptionLocalizations({ ru: 'Введите количество Камней Истока при их наличии' })
+				.setName('jades')
+				.setNameLocalizations({ ru: 'нефрит' })
+				.setDescription('Enter the amount of Stellar Jades if code provides any')
+				.setDescriptionLocalizations({ ru: 'Введите количество Звёздного нефрита при его наличии' })
 				.setMinValue(1)
 				.setMaxValue(9999999))
 		.addIntegerOption(option =>
 			option
-				.setName('mora')
-				.setNameLocalizations({ ru: 'мора' })
-				.setDescription('Enter the amount of Mora if code provides any')
-				.setDescriptionLocalizations({ ru: 'Введите количество Моры при её наличии' })
+				.setName('credits')
+				.setNameLocalizations({ ru: 'кредиты' })
+				.setDescription('Enter the amount of Crdits if code provides any')
+				.setDescriptionLocalizations({ ru: 'Введите количество Кредитов при их наличии' })
 				.setMinValue(1)
 				.setMaxValue(9999999))
 		.addIntegerOption(option =>
 			option
 				.setName('exp-purple')
 				.setNameLocalizations({ ru: 'опыт-фиол' })
-				.setDescription('Enter the amount of Hero\'s Wit if code provides any')
-				.setDescriptionLocalizations({ ru: 'Введите количество Опыта Героя при его наличии' })
+				.setDescription('Enter the amount of Traveler\'s Guides if code provides any')
+				.setDescriptionLocalizations({ ru: 'Введите количество Путеводителей Путешественника при их наличии' })
 				.setMinValue(1)
 				.setMaxValue(9999999))
 		.addIntegerOption(option =>
 			option
 				.setName('exp-blue')
 				.setNameLocalizations({ ru: 'опыт-син' })
-				.setDescription('Enter the amount of Adventurer\'s Experience if code provides any')
-				.setDescriptionLocalizations({ ru: 'Введите количество Опыта Искателя Приключений при его наличии' })
+				.setDescription('Enter the amount of Adventure Logs if code provides any')
+				.setDescriptionLocalizations({ ru: 'Введите количество Журналов Приключений при их наличии' })
 				.setMinValue(1)
 				.setMaxValue(9999999))
 		.addIntegerOption(option =>
 			option
-				.setName('ore-blue')
-				.setNameLocalizations({ ru: 'руда-син' })
-				.setDescription('Enter the amount of Mystic Enhancement Ore if code provides any')
-				.setDescriptionLocalizations({ ru: 'Введите количество Волшебной Руды Усиления при её наличии' })
+				.setName('aether-purple')
+				.setNameLocalizations({ ru: 'эфир-фиол' })
+				.setDescription('Enter the amount of Refined Aether if code provides any')
+				.setDescriptionLocalizations({ ru: 'Введите количество Очищенного Эфира при его наличии' })
 				.setMinValue(1)
 				.setMaxValue(9999999))
 		.addIntegerOption(option =>
 			option
-				.setName('ore-green')
-				.setNameLocalizations({ ru: 'руда-зел' })
-				.setDescription('Enter the amount of Fine Enhancement Ore if code provides any')
-				.setDescriptionLocalizations({ ru: 'Введите количество Превосходной Руды Усиления при её наличии' })
+				.setName('aether-blue')
+				.setNameLocalizations({ ru: 'эфир-син' })
+				.setDescription('Enter the amount of Condensed Aether if code provides any')
+				.setDescriptionLocalizations({ ru: 'Введите количество Конденсированного Эфира при его наличии' })
 				.setMinValue(1)
 				.setMaxValue(9999999))
 		.addStringOption(option =>
 			option
-				.setName('food')
-				.setNameLocalizations({ ru: 'еда' })
-				.setDescription('Choose if codes provides any food or not')
-				.setDescriptionLocalizations({ ru: 'Укажите, даёт ли код еду' })
+				.setName('other')
+				.setNameLocalizations({ ru: 'прочее' })
+				.setDescription('Choose if codes provides any other things')
+				.setDescriptionLocalizations({ ru: 'Укажите, даёт ли прочие предметы' })
 				.addChoices(
-					{ name: 'Code provides food', name_localizations: { ru: 'Код даёт еду' }, value: 'yes' },
+					{ name: 'Code provides other things', name_localizations: { ru: 'Код даёт прочие предметы' }, value: 'yes' },
 				))
 		.addStringOption(option =>
 			option
@@ -107,40 +108,40 @@ module.exports = {
 		await interaction.deferReply({ ephemeral: true });
 		// getting values
 		const code = interaction.options.getString('code').toUpperCase();
-		const gems = interaction.options.getInteger('gems');
-		const mora = interaction.options.getInteger('mora');
+		const jades = interaction.options.getInteger('jades');
+		const credits = interaction.options.getInteger('credits');
 		const exp_p = interaction.options.getInteger('exp-purple');
 		const exp_b = interaction.options.getInteger('exp-blue');
-		const ore_b = interaction.options.getInteger('ore-blue');
-		const ore_g = interaction.options.getInteger('ore-green');
+		const aether_p = interaction.options.getInteger('aether-purple');
+		const aether_b = interaction.options.getInteger('aether-blue');
 		const language = interaction.options.getString('language');
 		const role = interaction.options.getRole('role');
-		let food = false;
-		if (interaction.options.getString('food')) { food = true; }
+		let other = false;
+		if (interaction.options.getString('other')) { other = true; }
 		// checking fields
-		if (!(gems || mora || exp_b || exp_p || ore_b || ore_g)) {
+		if (!(jades || credits || exp_b || exp_p || aether_p || aether_b)) {
 			switch (interaction.locale) {
 			case 'ru':
-				return interaction.editReply({ content: 'Введите хотя бы один параметр, кроме кода, еды и языка.', ephemeral: true });
+				return interaction.editReply({ content: 'Введите хотя бы один параметр, кроме кода, прочего и языка.', ephemeral: true });
 			default:
-				return interaction.editReply({ content: 'Enter at least 1 parameter except code, food and laguage.', ephemeral: true });
+				return interaction.editReply({ content: 'Enter at least 1 parameter except code, other and laguage.', ephemeral: true });
 			}
 		}
-		if ((exp_b && exp_p) || (ore_b && ore_g)) {
+		if ((exp_b && exp_p) || (aether_p && aether_b)) {
 			switch (interaction.locale) {
 			case 'ru':
-				return interaction.editReply({ content: 'Одновременно не может быть два типа опыта или руды.', ephemeral: true });
+				return interaction.editReply({ content: 'Одновременно не может быть два типа опыта или эфира.', ephemeral: true });
 			default:
-				return interaction.editReply({ content: 'You can\'t enter different types of exp or ore at the same time.', ephemeral: true });
+				return interaction.editReply({ content: 'You can\'t enter different types of exp or aether at the same time.', ephemeral: true });
 			}
 		}
 		// let's start drawing
 		// draw bg and frame
 		const canvas = Canvas.createCanvas(res.width, res.height);
 		const context = canvas.getContext('2d');
-		const bg = await Canvas.loadImage(`${__dirname}/genshin/bg1.png`);
+		const bg = await Canvas.loadImage(`${__dirname}/hsr/bg1.png`);
 		context.drawImage(bg, 0, 0, canvas.width, canvas.height);
-		const frame = await Canvas.loadImage(`${__dirname}/genshin/frame.png`);
+		const frame = await Canvas.loadImage(`${__dirname}/hsr/frame.png`);
 		context.drawImage(frame, 0, 0, canvas.width, canvas.height);
 		// let's draw title, code and food if we have
 		context.fillStyle = '#FFFFFF';
@@ -153,39 +154,41 @@ module.exports = {
 		default:
 			title = 'New redemption code!';
 		}
-		context.font = '30px genshin';
+		context.font = '33px hsr';
 		context.fillText(title, (canvas.width - context.measureText(title).width) / 2, 46);
 		// draw code
-		context.font = applyText(canvas, code, 70, 680, 'genshin');
+		context.fillStyle = '#ffeac8';
+		context.font = applyText(canvas, code, 70, 680, 'hsr-code');
 		context.fillText(code, (canvas.width - context.measureText(code).width) / 2, 136);
 		// draw food if we have (change text for reward values anyways)
-		context.font = '18px genshin';
-		if (food) {
-			let foodText;
+		context.fillStyle = '#FFFFFF';
+		context.font = '18px hsr';
+		if (other) {
+			let otherText;
 			switch (language) {
 			case 'ru':
-				foodText = '*этот код содержит еду';
+				otherText = '*этот код содержит прочие предметы';
 				break;
 			default:
-				foodText = '*the code contains food';
+				otherText = '*the code contains other things';
 			}
-			context.fillText(foodText, 5, 291);
+			context.fillText(otherText, 5, 291);
 		}
 		// drawing reward cells
 		// prepare cells
 		const cells = [];
-		if (gems) { cells.push({ image: 'gem.png', value: `${gems}` }); }
-		if (mora) { cells.push({ image: 'mora.png', value: `${mora}` }); }
-		if (exp_p) { cells.push({ image: 'exp-purple.png', value: `${exp_p}` }); }
-		if (exp_b) { cells.push({ image: 'exp-blue.png', value: `${exp_b}` }); }
-		if (ore_b) { cells.push({ image: 'ore-blue.png', value: `${ore_b}` }); }
-		if (ore_g) { cells.push({ image: 'ore-green.png', value: `${ore_g}` }); }
+		if (jades) { cells.push({ image: 'jade.png', value: `${jades}` }); }
+		if (credits) { cells.push({ image: 'credits.png', value: `${credits}` }); }
+		if (exp_p) { cells.push({ image: 'exp-good.png', value: `${exp_p}` }); }
+		if (exp_b) { cells.push({ image: 'exp-ok.png', value: `${exp_b}` }); }
+		if (aether_p) { cells.push({ image: 'aether-good.png', value: `${aether_p}` }); }
+		if (aether_b) { cells.push({ image: 'aether-ok.png', value: `${aether_b}` }); }
 		const cellSize = 100;
 		const start_x = (canvas.width - cells.length * cellSize) / 2;
 		// draw cells
 		let shift = 0;
 		for (const cell of cells) {
-			const image = await Canvas.loadImage(`${__dirname}/genshin/${cell.image}`);
+			const image = await Canvas.loadImage(`${__dirname}/hsr/${cell.image}`);
 			context.drawImage(image, start_x + shift, 159, cellSize, cellSize);
 			context.fillText(cell.value, start_x + shift + (cellSize - context.measureText(cell.value).width) / 2, 259);
 			shift += cellSize;
@@ -198,11 +201,11 @@ module.exports = {
 		switch (language) {
 		case 'ru':
 			webLabel = 'Ввести код';
-			url = `https://genshin.hoyoverse.com/ru/gift?code=${code}`;
+			url = 'https://hsr.hoyoverse.com/gift';
 			break;
 		default:
 			webLabel = 'Redeem code';
-			url = `https://genshin.hoyoverse.com/en/gift?code=${code}`;
+			url = 'https://hsr.hoyoverse.com/gift';
 		}
 		const linkButton = new ButtonBuilder()
 			.setLabel(webLabel)
