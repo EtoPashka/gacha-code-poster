@@ -80,13 +80,12 @@ module.exports = {
 				.setMaxValue(9999999))
 		.addStringOption(option =>
 			option
-				.setName('food')
-				.setNameLocalizations({ ru: 'еда' })
-				.setDescription('Choose if codes provides any food or not')
-				.setDescriptionLocalizations({ ru: 'Укажите, даёт ли код еду' })
-				.addChoices(
-					{ name: 'Code provides food', name_localizations: { ru: 'Код даёт еду' }, value: 'yes' },
-				))
+				.setName('notes')
+				.setNameLocalizations({ ru: 'примечание' })
+				.setDescription('Make a note about any additions')
+				.setDescriptionLocalizations({ ru: 'Вы можете оставить примечание (например, есть ли в коде еда)' })
+				.setMinLength(2)
+				.setMaxLength(40))
 		.addStringOption(option =>
 			option
 				.setName('language')
@@ -115,15 +114,14 @@ module.exports = {
 		const ore_g = interaction.options.getInteger('ore-green');
 		const language = interaction.options.getString('language');
 		const role = interaction.options.getRole('role');
-		let food = false;
-		if (interaction.options.getString('food')) { food = true; }
+		const food = interaction.options.getString('notes');
 		// checking fields
 		if (!(gems || mora || exp_b || exp_p || ore_b || ore_g)) {
 			switch (interaction.locale) {
 			case 'ru':
-				return interaction.editReply({ content: 'Введите хотя бы один параметр, кроме кода, еды и языка.', ephemeral: true });
+				return interaction.editReply({ content: 'Введите хотя бы один параметр, кроме кода, прочего и языка.', ephemeral: true });
 			default:
-				return interaction.editReply({ content: 'Enter at least 1 parameter except code, food and laguage.', ephemeral: true });
+				return interaction.editReply({ content: 'Enter at least 1 parameter except code, notes and laguage.', ephemeral: true });
 			}
 		}
 		if ((exp_b && exp_p) || (ore_b && ore_g)) {
@@ -157,19 +155,11 @@ module.exports = {
 		context.fillText(title, (canvas.width - context.measureText(title).width) / 2, 46);
 		// draw code
 		context.font = applyText(canvas, code, 70, 680, 'genshin');
-		context.fillText(code, (canvas.width - context.measureText(code).width) / 2, 136);
+		context.fillText(code, (canvas.width - context.measureText(code).width) / 2, 133);
 		// draw food if we have (change text for reward values anyways)
 		context.font = '18px genshin';
 		if (food) {
-			let foodText;
-			switch (language) {
-			case 'ru':
-				foodText = '*этот код содержит еду';
-				break;
-			default:
-				foodText = '*the code contains food';
-			}
-			context.fillText(foodText, 5, 291);
+			context.fillText('* ' + food, 5, 287);
 		}
 		// drawing reward cells
 		// prepare cells
@@ -186,8 +176,8 @@ module.exports = {
 		let shift = 0;
 		for (const cell of cells) {
 			const image = await Canvas.loadImage(`${__dirname}/genshin/${cell.image}`);
-			context.drawImage(image, start_x + shift, 159, cellSize, cellSize);
-			context.fillText(cell.value, start_x + shift + (cellSize - context.measureText(cell.value).width) / 2, 259);
+			context.drawImage(image, start_x + shift, 155, cellSize, cellSize);
+			context.fillText(cell.value, start_x + shift + (cellSize - context.measureText(cell.value).width) / 2, 255);
 			shift += cellSize;
 		}
 		// building an attachment

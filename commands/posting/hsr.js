@@ -81,13 +81,12 @@ module.exports = {
 				.setMaxValue(9999999))
 		.addStringOption(option =>
 			option
-				.setName('other')
-				.setNameLocalizations({ ru: 'прочее' })
-				.setDescription('Choose if codes provides any other things')
-				.setDescriptionLocalizations({ ru: 'Укажите, даёт ли прочие предметы' })
-				.addChoices(
-					{ name: 'Code provides other things', name_localizations: { ru: 'Код даёт прочие предметы' }, value: 'yes' },
-				))
+				.setName('notes')
+				.setNameLocalizations({ ru: 'примечание' })
+				.setDescription('Make a note about any additions')
+				.setDescriptionLocalizations({ ru: 'Вы можете оставить примечание (например, есть ли в коде расходки)' })
+				.setMinLength(2)
+				.setMaxLength(55))
 		.addStringOption(option =>
 			option
 				.setName('language')
@@ -116,15 +115,14 @@ module.exports = {
 		const aether_b = interaction.options.getInteger('aether-blue');
 		const language = interaction.options.getString('language');
 		const role = interaction.options.getRole('role');
-		let other = false;
-		if (interaction.options.getString('other')) { other = true; }
+		const other = interaction.options.getString('notes');
 		// checking fields
 		if (!(jades || credits || exp_b || exp_p || aether_p || aether_b)) {
 			switch (interaction.locale) {
 			case 'ru':
-				return interaction.editReply({ content: 'Введите хотя бы один параметр, кроме кода, прочего и языка.', ephemeral: true });
+				return interaction.editReply({ content: 'Введите хотя бы один параметр, кроме кода, примечания и языка.', ephemeral: true });
 			default:
-				return interaction.editReply({ content: 'Enter at least 1 parameter except code, other and laguage.', ephemeral: true });
+				return interaction.editReply({ content: 'Enter at least 1 parameter except code, notes and laguage.', ephemeral: true });
 			}
 		}
 		if ((exp_b && exp_p) || (aether_p && aether_b)) {
@@ -164,15 +162,7 @@ module.exports = {
 		context.fillStyle = '#FFFFFF';
 		context.font = '18px hsr';
 		if (other) {
-			let otherText;
-			switch (language) {
-			case 'ru':
-				otherText = '*этот код содержит прочие предметы';
-				break;
-			default:
-				otherText = '*the code contains other things';
-			}
-			context.fillText(otherText, 5, 291);
+			context.fillText('* ' + other, 5, 291);
 		}
 		// drawing reward cells
 		// prepare cells
