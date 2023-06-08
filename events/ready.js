@@ -20,6 +20,7 @@ module.exports = {
 		setInterval(() => {
 			let random = Math.floor(Math.random() * status.length);
 			client.user.setActivity(status[random]);
-		}, 10_000);
+			console.log(`${status.at(random).name}`);
+		}, 30_000);
 	},
 };
