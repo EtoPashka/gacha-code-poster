@@ -107,6 +107,14 @@ module.exports = {
 		await interaction.deferReply({ ephemeral: true });
 		// getting values
 		const code = interaction.options.getString('code').toUpperCase();
+		if (code.includes(' ')) { 
+			switch (interaction.locale) {
+				case 'ru':
+					return interaction.editReply({ content: 'Пробелы недопустимы!', ephemeral: true });
+				default:
+					return interaction.editReply({ content: 'Spaces are not allowed!', ephemeral: true });
+				}
+		}
 		const jades = interaction.options.getInteger('jades');
 		const credits = interaction.options.getInteger('credits');
 		const exp_p = interaction.options.getInteger('exp-purple');
