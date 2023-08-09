@@ -96,12 +96,12 @@ module.exports = {
 					{ name: 'EN', value: 'en' },
 					{ name: 'RU', value: 'ru' },
 				))
-		.addRoleOption(option =>
+		/* .addRoleOption(option =>
 			option
 				.setName('role')
 				.setNameLocalizations({ ru: 'роль' })
 				.setDescription('Choose role to ping')
-				.setDescriptionLocalizations({ ru: 'Выберите роль для упоминания' })),
+				.setDescriptionLocalizations({ ru: 'Выберите роль для упоминания' })) */,
 	async execute(interaction) {
 		await interaction.deferReply({ ephemeral: true });
 		// getting values
@@ -113,7 +113,7 @@ module.exports = {
 		const ore_b = interaction.options.getInteger('ore-blue');
 		const ore_g = interaction.options.getInteger('ore-green');
 		const language = interaction.options.getString('language');
-		const role = interaction.options.getRole('role');
+		// const role = interaction.options.getRole('role');
 		const food = interaction.options.getString('notes');
 		// checking fields
 		if (!(gems || mora || exp_b || exp_p || ore_b || ore_g)) {
@@ -187,11 +187,11 @@ module.exports = {
 		let url;
 		switch (language) {
 		case 'ru':
-			webLabel = 'Ввести код';
+			webLabel = 'Ввести код на сайте';
 			url = `https://genshin.hoyoverse.com/ru/gift?code=${code}`;
 			break;
 		default:
-			webLabel = 'Redeem code';
+			webLabel = 'Redeem code on the website';
 			url = `https://genshin.hoyoverse.com/en/gift?code=${code}`;
 		}
 		const linkButton = new ButtonBuilder()
@@ -199,7 +199,7 @@ module.exports = {
 			.setURL(url)
 			.setStyle(ButtonStyle.Link);
 		// creating code message button
-		let codeLabel;
+		/* let codeLabel;
 		const customId = `etocode${code}`;
 		switch (language) {
 		case 'ru':
@@ -211,15 +211,10 @@ module.exports = {
 		const codeButton = new ButtonBuilder()
 			.setLabel(codeLabel)
 			.setCustomId(customId)
-			.setStyle(ButtonStyle.Primary);
+			.setStyle(ButtonStyle.Primary); */
 		// adding to the row
-		const row = new ActionRowBuilder().addComponents(codeButton, linkButton);
-		if (role) {
-			await interaction.channel.send({ content: `<@&${role.id}>`, files: [attachment], components: [row] });
-		}
-		else {
-			await interaction.channel.send({ files: [attachment], components: [row] });
-		}
+		const row = new ActionRowBuilder().addComponents(linkButton);
+		await interaction.channel.send({ content: `${code}`, files: [attachment], components: [row] });
 		const success = { ru: 'Успех!' };
 		return interaction.editReply(success[interaction.locale] ?? 'Success!');
 	},
