@@ -5,9 +5,9 @@ module.exports = {
 	data: new SlashCommandBuilder()
 		.setDMPermission(false)
 		.setDefaultMemberPermissions('0')
-		.setName('hsr')
-		.setDescription('Post Honkai: Star Rail promocode')
-		.setDescriptionLocalizations({ ru: 'Опубликовать промокод Honkai: Star Rail' })
+		.setName('nikke')
+		.setDescription('Post GODDESS OF VICTORY: NIKKE promocode')
+		.setDescriptionLocalizations({ ru: 'Опубликовать промокод GODDESS OF VICTORY: NIKKE' })
 		.addStringOption(option =>
 			option
 				.setName('code')
@@ -40,8 +40,8 @@ module.exports = {
 		const desc = interaction.options.getString('description');
 
 		const linkButton = new ButtonBuilder()
-			.setURL(`https://hsr.hoyoverse.com/gift?code=${code}`)
-			.setEmoji('1230910248399667230')
+			.setURL("https://discord.com/channels/946719263866101821/1209804895666970694")
+			.setEmoji('1231149480234192907')
 			.setStyle(ButtonStyle.Link);
 		if (desc) {
 			linkButton.setLabel(desc);
